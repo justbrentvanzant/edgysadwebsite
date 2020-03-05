@@ -1,4 +1,4 @@
-
+particleJS.load('paritcles-js','particles.json');
 //primary data storage for static information grid
 let dataHolder = [];
 
@@ -72,15 +72,49 @@ var showTable = function() {
 	const container = document.getElementById('example');
 	const hot = new Handsontable(container, {
 	  data: dataHolder,
-	  rowHeaders: true,
-	  colHeaders: true,
+	  colHeaders:['UserId', 'SessionId', 'CSS On', 'ASH (pixels)', 'ASW (pixels)', 'Cookies On', 'ECT', 'Images On', 'User Lang', 'User Agent', 'WSH (pixels)', 'WSW (pixels)'],
+	  columns: [
+	  {
+		readOnly: true
+	  },
+	  {
+		readOnly: true
+	  },
+	  {
+		readOnly: true
+	  },
+	  {
+		readOnly: true
+	  },
+	  {
+		readOnly: true
+	  },
+	  {
+		readOnly: true
+	  },
+	  {
+		readOnly: true
+	  },
+	  {
+		readOnly: true
+	  },
+	  {
+		readOnly: true
+	  },
+	  {
+		readOnly: true
+	  },
+	  {
+		readOnly:true
+	  }
+	  ],
 	  colWidths : 100,
 	  rowHeights : 30,
 	  licenseKey: 'non-commercial-and-evaluation'
 	});
 }
 
-//['UserId', 'SessionId', 'CSS On', 'Available Screen Height', 'Available Screen Width', 'Cookies On', 'ECT', 'Images On', 'User Language', 'User Agent', 'Window Screen Height', 'Window Screen Width';
+//
 //fetch data to utlize in table
  fetch('https://us-central1-cse135pa3-d92f9.cloudfunctions.net/showdb')
   .then((response) => {
