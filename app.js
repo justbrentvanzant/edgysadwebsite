@@ -1,4 +1,3 @@
-particlesJS.load('particles-js', 'particles.json');
 
 //primary data storage for static information grid
 let dataHolder = [];
@@ -22,9 +21,39 @@ var parseIntoTable = function (dataObj) {
 								staticObj = sessionObj[typeId];
 								for (var fieldKey in staticObj) {
 									if (staticObj.hasOwnProperty(fieldKey)){
-										constructArray.push(staticObj[fieldKey]);
+										if (fieldKey == "CSS being on (boolean)") {
+											constructArray[2] = (staticObj[fieldKey]);
+										}
+										else if (fieldKey == "available screen height") {
+											constructArray[3] = (staticObj[fieldKey]);
+										}
+										else if (fieldKey == "available screen width") {
+											constructArray[4] = (staticObj[fieldKey]);
+										}
+										else if (fieldKey == "cookies being on (boolean)") {
+											constructArray[5] = (staticObj[fieldKey]);
+										}										
+										else if (fieldKey == "effective connection type (string)") {
+											constructArray[6] = (staticObj[fieldKey]);
+										}
+										else if (fieldKey == "images being on (boolean)") {
+											constructArray[7] = (staticObj[fieldKey]);
+										}
+										else if (fieldKey == "user language (string)") {
+											constructArray[8] = (staticObj[fieldKey]);
+										}
+										else if (fieldKey == "user-agent string (string)") {
+											constructArray[9] = (staticObj[fieldKey]);
+										}
+										else if (fieldKey == "window screen height") {
+											constructArray[10] = (staticObj[fieldKey]);
+										}
+										else if (fieldKey == "window screen width") {
+											constructArray[11] = (staticObj[fieldKey]);
+										}								
 									}
 								}
+								dataHolder.push(constructArray);
 							}
 						}
 					}
@@ -32,6 +61,10 @@ var parseIntoTable = function (dataObj) {
 			}
 		}
 	} 
+}
+//console log data being held
+var showInfo = function() {
+	console.log(dataHolder);
 }
 
 //updates container element with a Handsontable generated with data in dataHolder
@@ -41,6 +74,8 @@ var showTable = function() {
 	  data: dataHolder,
 	  rowHeaders: true,
 	  colHeaders: true,
+	  colWidths : 100,
+	  rowHeights : 30,
 	  licenseKey: 'non-commercial-and-evaluation'
 	});
 }
@@ -53,5 +88,6 @@ var showTable = function() {
   })
   .then((data) => {
  	parseIntoTable(data);
- 	showTable();
+	showInfo();
+	showTable();
   });
