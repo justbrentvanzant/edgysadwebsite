@@ -105,6 +105,9 @@ var showTable = function() {
 		readOnly: true
 	  },
 	  {
+		readOnly: true
+	  },
+	  {
 		readOnly:true
 	  }
 	  ],
