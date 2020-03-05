@@ -7,29 +7,27 @@ let dataHolder = [];
 var parseIntoTable = function (dataObj) {
 	let UserIdKeyList = Object.keys(dataObj);
 	//iterate through users
-	for (var userIdKey of UserIdKeyList) {
-  		let currentUserId = userIdKey;
-		let currentUserObj = UserIdKeyList[userIdKey];
-		let SessionIdKeyList = Object.keys(currentUserObj); 
-		//iterate through sessions
-		for (var sessionIdKey of SessionIdKeyList) {
-			let currentSessionId = 	sessionIdKey;
-			let currentSessionObj =  SessionIdKeyList[sessionIdKey];
-			let dataTypeList = Object.keys(currentSessionObj); 
-			//iterate through data types
-			for (var dataTypeKey of dataTypeList) {
-				//check if static type data
-				if (dataTypeKey == "static") {
-					let dataTypeId = dataTypeKey;
-					let dataTypeObj =  dataTypeList[dataTypeKey];	
-					let fieldKeyList = Object.keys(dataTypeObj); 
-					var constructArray = []; 
-					constructArray.push(currentUserId);
-					constructArray.push(currentSessionId);
-					for (var fieldKey of fieldKeyList) {
-						constructArray.fieldKeyList[fieldKey];
+	for (var userId in dataObj) {
+		if (dataObj.hasOwnProperty(userId)){
+			userObj = dataObj[userId]
+			for (var sessionId in userObj){
+				if (userObj.hasOwnProperty(sessionId)){
+					sessionObj = userObj[sessionId]
+					for (var typeId in sessionObj) {
+						if (sessionObj.hasOwnProperty(typeId)){	
+							if (typeId == "static") {
+								let constructArray = [];
+								constructArray.push(userId);
+								constructArray.push(sessionId);
+								staticObj = sessionObj[typeId];
+								for (var fieldKey in staticObj) {
+									if (staticObj.hasOwnProperty(fieldKey)){
+										constructArray.push(staticObj[fieldKey]);
+									}
+								}
+							}
+						}
 					}
-					dataHolder.push(constructArray);
 				}
 			}
 		}
