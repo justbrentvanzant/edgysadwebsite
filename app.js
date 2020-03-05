@@ -75,45 +75,61 @@ var showTable = function() {
 	  colHeaders:['UserId', 'SessionId', 'CSS On', 'ASH (pixels)', 'ASW (pixels)', 'Cookies On', 'ECT', 'Images On', 'User Lang', 'User Agent', 'WSH (pixels)', 'WSW (pixels)'],
 	  columns: [
 	  {
+		type:'text',
 		readOnly: true
 	  },
 	  {
+		type:'text',
 		readOnly: true
 	  },
 	  {
+		type:'text',
 		readOnly: true
 	  },
 	  {
+		type:'numeric',  
 		readOnly: true
 	  },
 	  {
+		type:'numeric',  
 		readOnly: true
 	  },
 	  {
+		type:'text',  
 		readOnly: true
 	  },
 	  {
+		type:'text',  		
 		readOnly: true
 	  },
 	  {
+		type:'text',  		
 		readOnly: true
 	  },
 	  {
+		type:'text', 		  
 		readOnly: true
 	  },
 	  {
+		type:'text', 
 		readOnly: true
 	  },
 	  {
+		type:'numeric', 
 		readOnly: true
 	  },
 	  {
+		type:'numeric', 
 		readOnly:true
 	  }
 	  ],
 	  colWidths : 100,
 	  rowHeights : 30,
+	  filters: true,
+	  dropdownMenu: ['filter_by_condition','filter_action_bar'],
+	  columnSorting: true,
 	  licenseKey: 'non-commercial-and-evaluation'
+	  
 	});
 }
 
