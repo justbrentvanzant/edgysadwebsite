@@ -1,4 +1,4 @@
-particleJS.load('paritcles-js','particles.json');
+particlesJS.load('particles-js','particles.json');
 //primary data storage for static information grid
 let dataHolder = [];
 
