@@ -140,7 +140,7 @@ var showTable = function() {
     return response.json();
   })
   .then((data) => {
- 	parseIntoTable(data);
-	showInfo();
-	showTable();
+ 	//parseIntoTable(data);
+	///showInfo();
+	//showTable();
   });
