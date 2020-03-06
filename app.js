@@ -1,6 +1,7 @@
 particlesJS.load('particles-js','particles.json');
 //primary data storage for static information grid
 let dataHolder = [];
+let dataGraphHolder = [];
 
 //parses data from a JSON into formated data storage
 var parseIntoTable = function (dataObj) {
@@ -61,6 +62,61 @@ var parseIntoTable = function (dataObj) {
 			}
 		}
 	} 
+}
+
+var parseIntoGraph = function (dataObj) {
+	let UserIdKeyList = Object.keys(dataObj);
+	//iterate through users
+	for (var userId in dataObj) {
+		if (dataObj.hasOwnProperty(userId)){
+			userObj = dataObj[userId]
+			for (var sessionId in userObj){
+				if (userObj.hasOwnProperty(sessionId)){
+					sessionObj = userObj[sessionId]
+					for (var typeId in sessionObj) {
+						if (sessionObj.hasOwnProperty(typeId)){	
+							if (typeId == "performance") {
+								let constructArray = [];
+								constructArray.push(userId);
+								constructArray.push(sessionId);
+								staticObj = sessionObj[typeId];
+								for (var fieldKey in staticObj) {
+									if (staticObj.hasOwnProperty(fieldKey)){
+										if (fieldKey == "Initial Start Load Time") {
+											constructArray[2] = (staticObj[fieldKey]);
+										}
+										else if (fieldKey == "Page Loading Connect Start") {
+											constructArray[3] = (staticObj[fieldKey]);
+										}
+										else if (fieldKey == "Page Loading End Time") {
+											constructArray[4] = (staticObj[fieldKey]);
+										}
+										else if (fieldKey == "Page Loading Information") {
+											constructArray[5] = (staticObj[fieldKey]);
+										}										
+										else if (fieldKey == "Page Loading Navigation Start") {
+											constructArray[6] = (staticObj[fieldKey]);
+										}
+										else if (fieldKey == "Page Loading secureConnection Start") {
+											constructArray[7] = (staticObj[fieldKey]);
+										}
+										else if (fieldKey == "Total Time Taken") {
+											constructArray[8] = (staticObj[fieldKey]);
+										}						
+									}
+								}
+								dataGraphHolder.push(constructArray);
+							}
+						}
+					}
+				}
+			}
+		}
+	} 
+}
+
+var cleanGraphData = function ( ) {
+	for 
 }
 //console log data being held
 var showInfo = function() {
