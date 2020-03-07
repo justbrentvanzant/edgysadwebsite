@@ -76,6 +76,8 @@ createChart(ctx);
 	Above is graph
 	Below is chart
 	//TODO PAGINATION
+	
+	//TODO add spacing between the two
 	----------------------------------------------------------------------------------
 */
 //primary data storage for static information grid
