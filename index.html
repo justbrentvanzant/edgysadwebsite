@@ -12,7 +12,7 @@
 <body>
   <div id="particles-js"></div>
   <div id="centralContent">
-  	<!--<div id="example"></div>-->
+	<div id="example"></div>
     <canvas id="myChart"></canvas>
   </div>
 
@@ -20,62 +20,6 @@
  <!--particles script -->
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
  <script src="app.js"></script>
-
-
 <script>
-  const event = new Date('August 19, 1975 23:15:30');
-var ctx = document.getElementById("myChart");
-var options = {
-    scale: {
-        angleLines: {
-            display: false
-        },
-        ticks: {
-            suggestedMin: 1,
-            suggestedMax: 100
-        }
-    }
-};
-
-var data = {
-    datasets: [{
-
-        label: event.toTimeString().replace(/ *\([^)]*\) */g, ""),
-        data: [20, 20, 30,60],
-         backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-            ],
-    },{
-
-      label: event.toTimeString().replace(/ *\([^)]*\) */g, ""),
-        data: [40, 10, 10,100],
-         backgroundColor: [
-                'rgba(0, 99, 132, 0.2)',
-                'rgba(0, 99, 132, 0.2)',
-                'rgba(0, 99, 132, 0.2)',
-                'rgba(0, 99, 132, 0.2)',
-            ],
-    }
-    ],
-
-    // These labels appear in the legend and in the tooltips when hovering different arcs
-    labels: [
-        'Secure connection',
-        'Load information',
-        'End page loading',
-        'Total Time Taken'
-    ]
-};
-
-new Chart(ctx, {
-    data: data,
-    type: 'radar',
-    options: options
-});
-
 </script>
- 
  </html>
