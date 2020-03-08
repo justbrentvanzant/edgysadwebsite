@@ -2,24 +2,297 @@
 <head>
   <!--TODO ADD better fonts and styling -->
   <link href="main.css" rel="stylesheet">
+  <meta charset="utf-8">
   <link href="https://fonts.googleapis.com/css?family=Overpass:300,400,700" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
    <link href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css" rel="stylesheet">
+   <script src="https://cdn.zinggrid.com/zinggrid.min.js" defer></script>
    <script src="Chart.bundle.min.js"></script>
-  <title>Life sucks</title>
+  <title>Fuck</title>
 </head>
 
 <body>
-  <div id="particles-js"></div>
-  <div id="centralContent">
-	<div id="example"></div>
-    <canvas id="myChart"></canvas>
-  </div>
+	<div id="leftContent">
+		<div class="inner--container">
+       <div class="pager--container">
+         <button onClick="pager('first');">First Page</button>
+         <button onClick="pager('prev');">Prev Page</button>
+         <button onClick="pager('next');">Next Page</button>
+      	 <button onClick="pager('last');">Last Page</button> 
+      </div>
+       <zing-grid
+          caption="Browser Info" 
+          pager
+  				page-size=5
+    			page-size-options="2,5,20"
+          src="https://zinggrid-examples.firebaseio.com/movies/"
+      		layout="row"
+      		layout-controls="disabled"
+			height="200px"
+          viewport-stop>
+      </zing-grid>
+		</div>
+	</div>
+	<div id="rightContent">
+		<canvas id="myChart" class="graph"></canvas>
+	</div>
 
   </body>
- <!--particles script -->
-  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
- <script src="app.js"></script>
+ <script>
+ function pager(type) {
+  const zgRef = document.querySelector('zing-grid');
+ 	switch(type) {
+    case 'prev':
+      zgRef.prevPage();
+      break;
+    case 'next':
+      zgRef.nextPage();
+      break;
+    case 'last':
+      zgRef.lastPage();
+      break;
+    default:
+      zgRef.firstPage();
+  }
+}
+//gets a random number with 3 decimal places of between min and max (inclusive)
+var randomMinMax = function(min, max) {
+	var result =  Math.random() * (max - min + 1) + min;
+	return result.toFixed(3); 
+}
+
+var setupBrowserAndSpeed = function(browserLoc, speedLoc){
+	/*
+	 * setupSpeedDisplay
+	 * takes in a reference to a DOM element and appends a graph
+	 * of min, max, and average load times of the tracked website
+	 * onto the passed in element. 
+	 *
+	 * For now we are using staticaly stored values that are generated randomly
+	 * to experiment with different data values.
+	 */
+	var setupSpeedDisplay = function(speedLoc) {
+		//various data storage values
+		let dateVal = []; 
+		let dateValAvg = [];
+		let dateValMin = [];
+		let dateValMax = [];
+		const NUM_DATA_POINTS = 12;
+		const AVG_DATA_MIDDLE = 2.575; 
+		//generate random data for the chart
+		var generateRandomData = function() {
+			for (var i = 0; i < NUM_DATA_POINTS; i++) {
+				var genDate = 1+i; 
+				var dateObj = new Date('February ' + genDate +' 2020 23:15:30'); 
+				var dateString = dateObj.toString();
+				dateVal[i] = dateString.substring(0, dateString.indexOf("2020 ") - 1);
+				dateValAvg[i] = randomMinMax( AVG_DATA_MIDDLE-1.2,AVG_DATA_MIDDLE+1.4);
+				dateValMax[i] = randomMinMax( AVG_DATA_MIDDLE+2.4,AVG_DATA_MIDDLE+3.2);
+				dateValMin[i] = randomMinMax( AVG_DATA_MIDDLE-2.4,AVG_DATA_MIDDLE-2.2);
+			}
+		}
+		//create a chart given a targ elelemt to append chart in
+		var createChart = function(targElement) {
+			//generate random data for the chart
+			generateRandomData();
+			var stackedLine = new Chart(targElement, {
+				type: 'line',
+				data: {
+					labels: dateVal,
+					datasets: [
+					{
+						label: 'Average Time',
+						backgroundColor: 'rgba(255, 99, 132,0)',
+						borderColor: 'rgb(255, 99, 132)',
+						data: dateValAvg
+					},
+					{
+						label: 'Max Time',
+						backgroundColor: 'rgba(255, 99, 132,0)',
+						borderColor: 'rgba(54, 162, 235, 1)',
+						data: dateValMax
+					},
+					{
+						label: 'Min Time',
+						backgroundColor: 'rgba(255, 99, 132,0)',
+						borderColor: 'rgba(255, 206, 86, 1)',
+						data: dateValMin
+					},
+					
+					]
+				},
+				 options: {
+					title: {
+						display: true,
+						text: 'Page Speed'
+					}
+				}
+			});
+		}
+		//call create chart to create chart at passed in element
+		createChart(speedLoc);
+	}
+	
+	/*
+	 * setupBrowserDisplay
+	 * takes in a reference to a DOM element and appends a table
+	 * containing lots of information about a users browser
+	 *
+	 * Values are obtained using a cloud function call
+	 * to experiment with different data values.
+	 */
+	var setupBrowserDisplay = function(speedLoc) {
+		//primary data storage for static information grid
+		let dataHolder = [];
+		const zgRef = document.querySelector('zing-grid');
+		//parses data from a JSON into formated data storage
+		var parseDataIntoHolder = function (dataObj) {
+			let UserIdKeyList = Object.keys(dataObj);
+			//iterate through users
+			for (var userId in dataObj) {
+				if (dataObj.hasOwnProperty(userId)){
+					userObj = dataObj[userId]
+					for (var sessionId in userObj){
+						if (userObj.hasOwnProperty(sessionId)){
+							sessionObj = userObj[sessionId]
+							for (var typeId in sessionObj) {
+								if (sessionObj.hasOwnProperty(typeId)){	
+									if (typeId == "static") {
+										let constructArray = [];
+										constructArray.push(userId);
+										constructArray.push(sessionId);
+										staticObj = sessionObj[typeId];
+										for (var fieldKey in staticObj) {
+											if (staticObj.hasOwnProperty(fieldKey)){
+												if (fieldKey == "CSS being on (boolean)") {
+													constructArray[2] = (staticObj[fieldKey]);
+												}
+												else if (fieldKey == "available screen height") {
+													constructArray[3] = (staticObj[fieldKey]);
+												}
+												else if (fieldKey == "available screen width") {
+													constructArray[4] = (staticObj[fieldKey]);
+												}
+												else if (fieldKey == "cookies being on (boolean)") {
+													constructArray[5] = (staticObj[fieldKey]);
+												}										
+												else if (fieldKey == "effective connection type (string)") {
+													constructArray[6] = (staticObj[fieldKey]);
+												}
+												else if (fieldKey == "images being on (boolean)") {
+													constructArray[7] = (staticObj[fieldKey]);
+												}
+												else if (fieldKey == "user language (string)") {
+													constructArray[8] = (staticObj[fieldKey]);
+												}
+												else if (fieldKey == "user-agent string (string)") {
+													constructArray[9] = (staticObj[fieldKey]);
+												}
+												else if (fieldKey == "window screen height") {
+													constructArray[10] = (staticObj[fieldKey]);
+												}
+												else if (fieldKey == "window screen width") {
+													constructArray[11] = (staticObj[fieldKey]);
+												}								
+											}
+										}
+										dataHolder.push(constructArray);
+									}
+								}
+							}
+						}
+					}
+				}
+			} 
+		}
+
+		//updates container element with a Handsontable generated with data in dataHolder
+		var createTable = function(container) {
+		/*
+			const hot = new Handsontable(container, {
+			  data: dataHolder,
+			  colHeaders:['UserId', 'SessionId', 'CSS On', 'ASH (pixels)', 'ASW (pixels)', 'Cookies On', 'ECT', 'Images On', 'User Lang', 'User Agent', 'WSH (pixels)', 'WSW (pixels)'],
+			  columns: [
+			  {
+				type:'text',
+				readOnly: true
+			  },
+			  {
+				type:'text',
+				readOnly: true
+			  },
+			  {
+				type:'text',
+				readOnly: true
+			  },
+			  {
+				type:'numeric',  
+				readOnly: true
+			  },
+			  {
+				type:'numeric',  
+				readOnly: true
+			  },
+			  {
+				type:'text',  
+				readOnly: true
+			  },
+			  {
+				type:'text',  		
+				readOnly: true
+			  },
+			  {
+				type:'text',  		
+				readOnly: true
+			  },
+			  {
+				type:'text', 		  
+				readOnly: true
+			  },
+			  {
+				type:'text', 
+				readOnly: true
+			  },
+			  {
+				type:'numeric', 
+				readOnly: true
+			  },
+			  {
+				type:'numeric', 
+				readOnly:true
+			  }
+			  ],
+			  colWidths : 100,
+			  rowHeights : 30,
+			  filters: true,
+			  dropdownMenu: ['filter_by_condition','filter_action_bar'],
+			  columnSorting: true,
+			  licenseKey: 'non-commercial-and-evaluation'
+			  
+			});
+			*/
+			zgRef.setData(dataHolder);
+		}
+
+		//Fetch call utilized to obtain data from database using cloud function
+		 fetch('https://us-central1-cse135pa3-d92f9.cloudfunctions.net/showdb')
+		  .then((response) => {
+			return response.json();
+		  })
+		  .then((data) => {
+			parseDataIntoHolder(data);
+			createTable(browserLoc);
+		 }); 
+	 }
+	 setupSpeedDisplay(speedLoc);
+	 setupBrowserDisplay(browserLoc);
+ }
+
+var graphElement = document.getElementById("myTable");
+var speedElement = document.getElementById("myChart");
+
+setupBrowserAndSpeed(graphElement, speedElement);
+ </script>
 <script>
 </script>
  </html>

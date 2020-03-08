@@ -18,13 +18,38 @@ body
   height: 100%;
   z-index: -10;
 }
-
-#centralContent{
+.pager--container {
+  display: flex;
+  justify-content: flex-start;
+}
+zing-grid{
+  height: 35vh;
+}
+zing-grid[loading] {
+  height: 35vh;
+}
+	
+#myTable {
+}
+#leftContent{
    position: fixed;
   top: 50%;
-  left: 50%;
-  height:60vh;
-  width: 60vw;
+  left: 25%;
+  height:440px;
+  width: 40vw;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
+  padding: 0.4%; 
+  background-color: #f5f5f5;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+#rightContent{
+   position: fixed;
+  top: 50%;
+  left: 75%;
+  height:440px;
+  width: 40vw;
   /* bring your own prefixes */
   transform: translate(-50%, -50%);
   padding: 0.4%; 

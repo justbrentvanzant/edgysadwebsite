@@ -153,6 +153,7 @@ var showInfo = function() {
 var createTable = function(container) {
 	const hot = new Handsontable(container, {
 	  data: dataHolder,
+	   stretchH: 'all',
 	  colHeaders:['UserId', 'SessionId', 'CSS On', 'ASH (pixels)', 'ASW (pixels)', 'Cookies On', 'ECT', 'Images On', 'User Lang', 'User Agent', 'WSH (pixels)', 'WSW (pixels)'],
 	  columns: [
 	  {
